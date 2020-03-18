@@ -9,7 +9,7 @@ const POKEMONS_URL = `${BASE_URL}/pokemons`
 // Render cards on page
 
 // Trainer Card
-<div class="card" data-id="1"><p>Prince</p>
+{/* <div class="card" data-id="1"><p>Prince</p>
   <button data-trainer-id="1">Add Pokemon</button>
   <ul>
     <li>Jacey (Kakuna) <button class="release" data-pokemon-id="140">Release</button></li>
@@ -18,7 +18,7 @@ const POKEMONS_URL = `${BASE_URL}/pokemons`
     <li>Rosetta (Eevee) <button class="release" data-pokemon-id="150">Release</button></li>
     <li>Rod (Beedrill) <button class="release" data-pokemon-id="151">Release</button></li>
   </ul>
-</div> 
+</div>  */}
 // ______________________________________________________________________________________________________________________________________
 // Whenever a user hits Add Pokemon and they have space on their team, they should get a new Pokemon.
 // Whenever a user hits Release Pokemon on a specific Pokemon team, that specific Pokemon should be released from the team.
@@ -35,11 +35,26 @@ document.addEventListener('DOMContentLoaded', function(event){
 })
 
 function rendorTrainers(trainer){
-    let div = dcoument.createElement('div')
-    div.className = 'card'
-    div.dataset.id = trainer.id
-    div.innterHTML = ('`<p>${trainer.name}</p>`')
+    return `<p>${trainer.name}</p>
+    <button data-trainer-id="${trainer.id}">Add Pokemon</button>
+    <ul>
+        ${trainer.pokemons.map(pokemon => {
+        return `<li>${pokemon.nickname} (${pokemon.species}) <button class="release" data-pokemon-id="${pokemon.id}">Release</button></li>`
+    })}
 
-    let button = document.createElement('button')
-    
+    </ul>`
 }
+
+let trainer = document.querySelector('main')
+
+getTrainers()
+.then(json => {
+    json.forEach(trainer => {
+        let div = dcoument.createElement('div')
+        div.className = 'card'
+        div.dataset.id = trainer.id
+
+        div.innerHTML = rendorTrainers(trainer)
+
+    })
+    })
